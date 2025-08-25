@@ -641,7 +641,7 @@ details[open] summary::before {
   flex-wrap: wrap;
   min-height: 44vh;
   max-height: 44vh; 
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 599px) {
@@ -1557,6 +1557,7 @@ details[open] summary::before {
   top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%);
+  min-width: auto;
   width: 300px; /* Фиксированная ширина */
   white-space: normal; /* Перенос текста */
   word-wrap: break-word; /* Перенос длинных слов */
@@ -1565,6 +1566,7 @@ details[open] summary::before {
   font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   pointer-events: none;
+  display: block;
 }
 
 @media (max-width: 599px) {

@@ -310,6 +310,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const beforeImg = container.querySelector('.before-img');
   const handle = container.querySelector('.slider-handle');
 
+  // Ждём полной загрузки изображения
+  beforeImg.onload = () => {
+    setSizes();
+  };
+
+  // В случае если изображение уже было загружено ранее (например, кеш), вызовем setSizes() сразу
+  if (beforeImg.complete) {
+    setSizes();
+  }
+
   // Установка размеров
   function setSizes() {
     const containerWidth = container.offsetWidth;
