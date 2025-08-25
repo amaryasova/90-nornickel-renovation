@@ -630,9 +630,10 @@ document.addEventListener('DOMContentLoaded', function() {
               position: absolute;
               top: 0;
               left: 0;
-              width: 100%;
-              height: 100%;
+              width: 80%;
+              height: auto;
               object-fit: contain;
+              margin: 2rem;
           }
           .map-img.hidden {
               display: none;
@@ -644,9 +645,9 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           .map-container {
               position: relative;
-              width: 100%;
-              height: 500px;
-              overflow: hidden;
+              width: 80%;
+              height: auto;
+              margin: 2rem auto;
           }
       `;
       document.head.appendChild(style);
