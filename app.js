@@ -643,7 +643,6 @@ document.addEventListener('DOMContentLoaded', function() {
               width: 80%;
               height: auto;
               object-fit: contain;
-              margin: 2rem;
           }
           .map-img.hidden {
               display: none;
@@ -657,7 +656,7 @@ document.addEventListener('DOMContentLoaded', function() {
               position: relative;
               width: 80%;
               height: auto;
-              margin: 2rem auto;
+              margin: 1rem auto;
           }
           @media (max-width: 599px) {
             .map-container {

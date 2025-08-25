@@ -344,7 +344,7 @@ h2 {
   font-size: 1rem;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   background-color: var(--dark-color);
   padding: 2rem;
   position: absolute;
@@ -1528,8 +1528,8 @@ details[open] summary::before {
 
 /* Позиционирование второго кружка */
 .circle-2 {
-  top: 70%;
-  left: 65%;
+  top: 50%;
+  left: 70%;
 }
 
 .circle-3 {
