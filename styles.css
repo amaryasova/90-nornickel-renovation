@@ -930,7 +930,7 @@ details[open] summary::before {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
   .micro-slider {
   height: 85vw;
