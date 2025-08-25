@@ -659,6 +659,11 @@ document.addEventListener('DOMContentLoaded', function() {
               height: auto;
               margin: 2rem auto;
           }
+          @media (max-width: 599px) {
+            .map-container {
+              width: 100%;
+            }
+          }
       `;
       document.head.appendChild(style);
   }

@@ -1125,7 +1125,17 @@ details[open] summary::before {
   }
 
   .indicator_item_number {
-  font-size: 4rem;
+    font-size: 3rem;
+  }
+
+  .indicator_item_number_mini {
+    font-size: 1.5rem;
+    font-family: "b";
+    line-height: 3.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   
 }
