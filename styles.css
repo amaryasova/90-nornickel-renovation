@@ -644,7 +644,7 @@ details[open] summary::before {
   margin-bottom: 2rem;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1024px) {
   .tab_item {
     min-height: auto;
     max-height: none;
@@ -678,7 +678,7 @@ details[open] summary::before {
   overflow-y: auto;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1024px) {
   .tab_item_text {
     min-height: auto;
     max-height: none;
@@ -868,7 +868,7 @@ details[open] summary::before {
   
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
 
   .indicator_container {
   max-width: 86%;
