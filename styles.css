@@ -247,7 +247,7 @@ nav {
 h1 {
   margin: 0;
   font-family: 'b', sans-serif;
-  font-size: 7rem;
+  font-size: 7.5vw;
   line-height: 120%;
   background: var(--light-color);
   background-clip: text;
@@ -260,7 +260,7 @@ h1 {
 h5 {
   margin-left: 5px;
   font-family: 'b', sans-serif;
-  font-size: 3rem;
+  font-size: 3vw;
   line-height: 120%;
   background: var(--light-color);
   background-clip: text;
@@ -639,9 +639,9 @@ details[open] summary::before {
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
-  min-height: 44vh;
-  max-height: 44vh; 
-  margin-bottom: 2rem;
+  min-height: 20vw;
+  max-height: 20vw; 
+  margin-bottom: 3rem;
 }
 
 @media (max-width: 1024px) {
@@ -863,9 +863,14 @@ details[open] summary::before {
   .kjdhxowq {
     width: 70%;
   }
-  
 
+  .links {
+    display: none;
+  }
   
+  .burger {
+    display: flex;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -907,8 +912,7 @@ details[open] summary::before {
   
   .burger {
     display: flex;
-  }
-  
+  } 
   
   
   .tab_container {
@@ -1023,14 +1027,10 @@ details[open] summary::before {
   justify-content: center;
 }
 
-  .quiz-container {
-    width: 74%;
-  }
-
   h1 {
     margin: 0;
     font-family: 'b', sans-serif;
-    font-size: 3.5rem;
+    font-size: 4rem;
     line-height: 120%;
     background: var(--light-color);
     background-clip: text;
@@ -1175,7 +1175,6 @@ details[open] summary::before {
 }
 
 .future_slider_container {
-  width: 86%;
   margin: 0rem auto;
   margin-top: 2rem;
   position: relative;
@@ -1285,10 +1284,6 @@ details[open] summary::before {
 
 /* Адаптивные стили для десктопов */
 @media (min-width: 1024px) {
-  .future_slider_container {
-    width: 75%;
-  }
-  
   .future_slider_item.active {
     gap: 2rem;
   }
