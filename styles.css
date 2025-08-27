@@ -765,7 +765,11 @@ details[open] summary::before {
 .footer__site a {
   color: var(--light-color);
   text-decoration: none;
+}
 
+.footer__site p {
+  color: var(--light-color);
+  text-decoration: none;
 }
 
 
@@ -1973,17 +1977,6 @@ details[open] summary::before {
   opacity: 0;
   transform: scale(0.8);
 }
-
-.copyright {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  font-size: 0.8rem;
-  color: white;
-  z-index: 1;
-}
-
-
 
 /* Плитки для комфортной среды */
 .comfort_container {

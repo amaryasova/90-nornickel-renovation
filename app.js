@@ -371,6 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let slideInterval;
   let isManualNavigation = false;
   let isSliderInViewport = false;
+  let autoScrollStoppedByUser = false; // Флаг для остановки автопрокрутки по ручному действию
 
   // Инициализация слайдера
   function initSlider() {
@@ -390,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentSlide = slideIndex;
     initSlider();
     isManualNavigation = true;
-    
+
     // Сбрасываем флаг ручной навигации после задержки
     setTimeout(() => {
       isManualNavigation = false;
@@ -399,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Следующий слайд
   function nextSlide() {
-    if (!isManualNavigation && isSliderInViewport) {
+    if (!isManualNavigation && isSliderInViewport && !autoScrollStoppedByUser) {
       currentSlide = (currentSlide + 1) % sliderItems.length;
       initSlider();
     }
@@ -407,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Автопрокрутка
   function startAutoSlide() {
-    if (!slideInterval && isSliderInViewport) {
+    if (!slideInterval && isSliderInViewport && !autoScrollStoppedByUser) {
       slideInterval = setInterval(nextSlide, 3000);
     }
   }
@@ -424,6 +425,9 @@ document.addEventListener('DOMContentLoaded', function() {
       goToSlide(index);
       stopAutoSlide();
       startAutoSlide();
+      
+      // Устанавливаем флаг, что автопрокрутка остановлена вручную
+      autoScrollStoppedByUser = true;
     });
     
     button.addEventListener('mouseenter', stopAutoSlide);
@@ -436,12 +440,19 @@ document.addEventListener('DOMContentLoaded', function() {
       goToSlide(index);
       stopAutoSlide();
       startAutoSlide();
+
+      // Также считаем, что пользователь остановил автоматическую прокрутку
+      autoScrollStoppedByUser = true;
     });
   });
 
   // Пауза при наведении на слайдер
   sliderContainer.addEventListener('mouseenter', stopAutoSlide);
-  sliderContainer.addEventListener('mouseleave', startAutoSlide);
+  sliderContainer.addEventListener('mouseleave', () => {
+    if (!autoScrollStoppedByUser) {
+      startAutoSlide();
+    }
+  });
 
   // Intersection Observer для определения видимости слайдера
   const observer = new IntersectionObserver((entries) => {
@@ -450,7 +461,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Слайдер в области видимости
         isSliderInViewport = true;
         sliderContainer.classList.add('in-viewport');
-        startAutoSlide();
+        if (!autoScrollStoppedByUser) { 
+          startAutoSlide();
+        }
       } else {
         // Слайдер вне области видимости
         isSliderInViewport = false;
@@ -459,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }, {
-    threshold: 0.5 // Срабатывает когда 50% слайдера видно
+    threshold: 0.5 // Срабатывает когда половина слайдера видно
   });
 
   // Наблюдаем за слайдером
