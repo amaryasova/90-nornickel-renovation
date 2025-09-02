@@ -37,69 +37,6 @@ function scroll_part6(options = { block: "start", inline: "nearest", behavior: "
     part6.scrollIntoView(options);
 }
 
-document.querySelectorAll('.option').forEach(option => {
-	option.addEventListener('click', () => {
-		const feedbackText = document.getElementById('feedback-text');
-		const answer = option.getAttribute('data-answer');
-
-		// Сброс стилей кнопок
-		document.querySelectorAll('.option').forEach(btn => {
-			btn.classList.remove('correct', 'wrong');
-		});
-
-		// Добавление стиля для выбранной кнопки
-		if (answer === 'correct') {
-			option.classList.add('correct');
-			feedbackText.textContent = 'Этого духа звали Nickel — «озорник» на немецком. Он «подбрасывал» искателям меди минерал красного цвета, похожий на медную руду. И, кстати, Джефферсона звали не Ник, а Томас';
-		} else {
-			option.classList.add('wrong');
-			feedbackText.textContent = 'Неправильно, попробуйте еще раз';
-		}
-	});
-});
-
-document.querySelectorAll('.option2').forEach(option2 => {
-	option2.addEventListener('click', () => {
-		const feedbackText2 = document.getElementById('feedback-text2');
-		const answer2 = option2.getAttribute('data-answer2');
-
-		// Сброс стилей кнопок
-		document.querySelectorAll('.option2').forEach(btn => {
-			btn.classList.remove('correct2', 'wrong2');
-		});
-
-		// Добавление стиля для выбранной кнопки
-		if (answer2 === 'correct2') {
-			option2.classList.add('correct2');
-			feedbackText2.textContent = 'Никель — микроэлемент, который необходим всем живым организмам. Роль этого металла в организме изучена не до конца, но известно, что он участвует в ферментативных реакциях и влияет на окислительные процессы. Его среднее содержание в растениях — 0,00005 %, в морских животных чуть меньше — 0,00016 % массы тела, в организме человека 0,0000012 %, а в наземных животных всего 0,000001 %.';
-		} else {
-			option2.classList.add('wrong2');
-			feedbackText2.textContent = 'Неправильно, попробуйте еще раз';
-		}
-	});
-});
-
-document.querySelectorAll('.option3').forEach(option3 => {
-	option3.addEventListener('click', () => {
-		const feedbackText3 = document.getElementById('feedback-text3');
-		const answer3 = option3.getAttribute('data-answer3');
-
-		// Сброс стилей кнопок
-		document.querySelectorAll('.option3').forEach(btn => {
-			btn.classList.remove('correct3', 'wrong3');
-		});
-
-		// Добавление стиля для выбранной кнопки
-		if (answer3 === 'correct3') {
-			option3.classList.add('correct3');
-			feedbackText3.textContent = 'Золото 585 пробы содержит 58,5 % золота, а остальные 41,5 % — это добавки других металлов, таких как медь, серебро или никель, мельхион — сплав меди с никелем, нейзильбер — сплав меди, никеля и цинка, а вот баббит — это сплав из олова, сурьмы и меди.';
-		} else {
-			option3.classList.add('wrong3');
-			feedbackText3.textContent = 'Неправильно, попробуйте еще раз';
-		}
-	});
-});
-
 document.addEventListener("DOMContentLoaded", function () {
 	const contents = document.querySelectorAll('.content'); // Находим все блоки
   
@@ -192,9 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(counter);
   });
 });
-
-
-
 
 // увеличивает фото по клику с классом open
 
@@ -483,6 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Получаем элементы DOM
   const buttons = document.querySelectorAll('.button');
   const container = document.querySelector('.hist');
   const histogram = document.querySelector('.histogram');
@@ -499,19 +434,46 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('.bar-4 .bar-value')
   ];
   
+  // Переменные состояния
   let currentButtonIndex = 0;
-  let autoSwitchInterval;
+  let autoSwitchInterval = null;
   let isAutoSwitching = true;
   let resumeTimeout = null;
+  let isMouseOver = false; // Флаг для отслеживания наведения мыши
   const maxBarHeight = 250; // Максимальная высота столбика в пикселях
 
-  // Функция для нормализации значений (масштабирования)
+  /**
+   * Проверяет, находится ли элемент в зоне видимости viewport
+   * @param {Element} el - Элемент для проверки
+   * @returns {boolean} - true если элемент виден
+   */
+  function isElementInViewport(el) {
+    if (!el) return false;
+    
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
+  /**
+   * Нормализует значения для отображения в гистограмме
+   * @param {number[]} values - Массив числовых значений
+   * @returns {number[]} - Нормализованные значения высот
+   */
   function normalizeValues(values) {
       const maxValue = Math.max(...values);
       return values.map(value => (value / maxValue) * maxBarHeight);
   }
 
-  // Функция для форматирования чисел
+  /**
+   * Форматирует числа для отображения в тексте столбиков
+   * @param {number} value - Число для форматирования
+   * @returns {string} - Отформатированная строка
+   */
   function formatNumber(value) {
       if (value >= 1000) {
           return value;
@@ -522,7 +484,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   }
 
-  // Функция для установки высоты столбиков
+  /**
+   * Устанавливает высоты столбиков гистограммы
+   * @param {number[]} values - Массив значений для отображения
+   */
   function setBarsHeight(values) {
       const normalizedHeights = normalizeValues(values);
       
@@ -536,7 +501,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
   
-  // Функция для активации кнопки по индексу
+  /**
+   * Активирует кнопку по индексу и обновляет гистограмму
+   * @param {number} index - Индекс кнопки для активации
+   */
   function activateButton(index) {
       // Убираем активный класс у всех кнопок
       buttons.forEach(btn => btn.classList.remove('active'));
@@ -551,7 +519,9 @@ document.addEventListener('DOMContentLoaded', function() {
       currentButtonIndex = index;
   }
   
-  // Функция для переключения на следующую кнопку
+  /**
+   * Переключает на следующую кнопку в цикле
+   */
   function switchToNextButton() {
       let nextIndex = currentButtonIndex + 1;
       if (nextIndex >= buttons.length) {
@@ -560,54 +530,103 @@ document.addEventListener('DOMContentLoaded', function() {
       activateButton(nextIndex);
   }
   
-  // Функция для запуска автопереключения
+  /**
+   * Запускает автоматическое переключение кнопок
+   * Работает только если автопереключение включено и контейнер виден
+   */
   function startAutoSwitch() {
-      if (isAutoSwitching) {
+      if (isAutoSwitching && isElementInViewport(container) && !isMouseOver) {
           stopAutoSwitch(); // Останавливаем предыдущий интервал
           autoSwitchInterval = setInterval(switchToNextButton, 2000);
+          console.log('Автопрокрутка запущена');
       }
   }
   
-  // Функция для остановки автопереключения
+  /**
+   * Останавливает автоматическое переключение (без отключения флага)
+   * Очищает интервал и любой ожидающий таймаут возобновления
+   */
   function stopAutoSwitch() {
-      clearInterval(autoSwitchInterval);
+      if (autoSwitchInterval) {
+          clearInterval(autoSwitchInterval);
+          autoSwitchInterval = null;
+          console.log('Автопрокрутка остановлена');
+      }
       if (resumeTimeout) {
           clearTimeout(resumeTimeout);
           resumeTimeout = null;
       }
   }
   
-  // Функция для возобновления автопереключения
-  function resumeAutoSwitch() {
-      isAutoSwitching = true;
-      startAutoSwitch();
+  /**
+   * Полностью отключает автопереключение
+   * Используется для ручной остановки без автоматического возобновления
+   */
+  function disableAutoSwitch() {
+      isAutoSwitching = false;
+      stopAutoSwitch();
+      console.log('Автопрокрутка отключена');
   }
   
+  /**
+   * Включает и возобновляет автопереключение
+   */
+  function enableAutoSwitch() {
+      isAutoSwitching = true;
+      startAutoSwitch();
+      console.log('Автопрокрутка включена');
+  }
+
   // Обработчики событий для кнопок
   buttons.forEach((button, index) => {
       button.addEventListener('click', function() {
-          // Останавливаем автопереключение и любой ожидающий таймаут
-          stopAutoSwitch();
-          isAutoSwitching = false;
+          // Полностью отключаем автопереключение при ручном нажатии
+          disableAutoSwitch();
           
           // Активируем выбранную кнопку
           activateButton(index);
-          
-          // Запускаем таймер для автоматического возобновления через 3 секунды
-          resumeTimeout = setTimeout(function() {
-              resumeAutoSwitch();
-          }, 3000);
       });
   });
   
   // Обработчики для паузы при наведении
   container.addEventListener('mouseenter', function() {
+      // Устанавливаем флаг наведения мыши
+      isMouseOver = true;
+      // Останавливаем автопрокрутку при наведении
       stopAutoSwitch();
+      console.log('Мышь над контейнером - пауза');
   });
   
   container.addEventListener('mouseleave', function() {
-      if (isAutoSwitching) {
+      // Сбрасываем флаг наведения мыши
+      isMouseOver = false;
+      // Возобновляем автопрокрутку при уходе мыши, если она была включена
+      if (isAutoSwitching && isElementInViewport(container)) {
           startAutoSwitch();
+      }
+      console.log('Мышь ушла с контейнера');
+  });
+
+  // Обработчик события прокрутки для управления автопрокруткой
+  window.addEventListener('scroll', function() {
+      if (isAutoSwitching) {
+          // Если контейнер стал видимым - запускаем, если скрылся - останавливаем
+          if (isElementInViewport(container) && !isMouseOver) {
+              startAutoSwitch();
+          } else {
+              stopAutoSwitch();
+          }
+      }
+  });
+
+  // Обработчик изменения размера окна
+  window.addEventListener('resize', function() {
+      if (isAutoSwitching) {
+          if (isElementInViewport(container) && !isMouseOver) {
+              startAutoSwitch();
+          } else {
+              stopAutoSwitch();
+          }
       }
   });
   
@@ -618,8 +637,10 @@ document.addEventListener('DOMContentLoaded', function() {
       // Небольшая задержка для плавного появления анимации при загрузке
       setTimeout(() => {
           setBarsHeight(initialValues);
-          // Запускаем автопереключение после загрузки
-          startAutoSwitch();
+          // Запускаем автопереключение только если контейнер виден и мышь не над ним
+          if (isElementInViewport(container) && !isMouseOver) {
+              startAutoSwitch();
+          }
       }, 100);
   }
   
@@ -636,13 +657,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const buttons = document.querySelectorAll('.button-map');
   const buttonsContainer = document.querySelector('.buttons-container');
   const mapContainer = document.querySelector('.map-container');
-  const defaultMap = document.querySelector('.map-img[src="map.png"]');
-  const zoomMap = document.querySelector('.map-img[src="map_zoom.png"]');
+  const defaultMap = document.querySelector('.map-img[src="map.svg"]');
+  const zoomMap = document.querySelector('.map-img[src="map_zoom.svg"]');
   
   let autoScrollInterval;
   let isPausedByHover = false;
-  let isPausedByClick = false;
-  let clickPauseTimeout;
+  let isAutoScrollEnabled = true; // Флаг для отслеживания состояния автопрокрутки
+  let isInViewport = false;
+  let observer;
 
   // Добавляем CSS классы для анимации карт
   function addMapStyles() {
@@ -692,15 +714,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Переключение на увеличенную карту
   function switchToZoomMap() {
-      if (defaultMap && zoomMap) {
+    if (defaultMap && zoomMap) {
+      if (defaultMap.classList.contains('visible')) {
+        // Запускаем масштабирование до 2х
+        defaultMap.style.transform = 'scale(2) translateX(-5%) translateY(15%)';
+
+        // После завершения анимации возвращаем масштаб к 1
+        setTimeout(() => {
+          defaultMap.style.transform = 'scale(1)';
+          // Показать zoomMap
           defaultMap.classList.remove('visible');
           defaultMap.classList.add('hidden');
-          
-          setTimeout(() => {
-              zoomMap.classList.remove('hidden');
-              zoomMap.classList.add('visible');
-          }, 50);
+          zoomMap.classList.remove('hidden');
+          zoomMap.classList.add('visible');
+        }, 500); // задержка равна времени transition
       }
+    }
   }
 
   // Возврат к обычной карте
@@ -712,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function() {
           setTimeout(() => {
               defaultMap.classList.remove('hidden');
               defaultMap.classList.add('visible');
-          }, 50);
+          }, 0);
       }
   }
 
@@ -749,22 +778,23 @@ document.addEventListener('DOMContentLoaded', function() {
           case 'Жилые дома':
               document.querySelectorAll('.triangle-map').forEach(item => {
                   item.style.display = 'flex';
-                  setTimeout(() => item.style.opacity = '1', 50);
+                  if (zoomMap.classList.contains('visible')) {
+                    setTimeout(() => item.style.opacity = '1', 50);
+                  } else {
+                    setTimeout(() => item.style.opacity = '1', 500);
+                  }
               });
               break;
           case 'Комфортная среда':
               document.querySelectorAll('.circle-map').forEach(item => {
                   item.style.display = 'flex';
-                  setTimeout(() => item.style.opacity = '1', 50);
+                  if (zoomMap.classList.contains('visible')) {
+                    setTimeout(() => item.style.opacity = '1', 50);
+                  } else {
+                    setTimeout(() => item.style.opacity = '1', 500);
+                  }
               });
               break;
-          case 'Вне программы':
-              document.querySelectorAll('.romb-map').forEach(item => {
-                  item.style.display = 'flex';
-                  setTimeout(() => item.style.opacity = '1', 50);
-              });
-              break;
-          default:
               // Для других кнопок скрываем все маркеры
               hideAllMarkers();
       }
@@ -772,6 +802,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Функция для переключения на следующую кнопку
   function switchToNextButton() {
+      if (!isInViewport || !isAutoScrollEnabled) return; // Не переключаем, если не в зоне видимости или автопрокрутка отключена
+      
       const activeButton = document.querySelector('.button-map.active');
       let nextIndex = 0;
       
@@ -795,6 +827,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Функция для запуска автопрокрутки
   function startAutoScroll() {
+      if (!isInViewport || !isAutoScrollEnabled) return; // Не запускаем, если не в зоне видимости или автопрокрутка отключена
+      
       stopAutoScroll();
       autoScrollInterval = setInterval(switchToNextButton, 3000);
   }
@@ -803,22 +837,62 @@ document.addEventListener('DOMContentLoaded', function() {
   function stopAutoScroll() {
       if (autoScrollInterval) {
           clearInterval(autoScrollInterval);
+          autoScrollInterval = null;
       }
+  }
+
+  // Полностью отключаем автопрокрутку
+  function disableAutoScroll() {
+      isAutoScrollEnabled = false;
+      stopAutoScroll();
+  }
+
+  // Включаем автопрокрутку
+  function enableAutoScroll() {
+      isAutoScrollEnabled = true;
+      if (isInViewport && !isPausedByHover) {
+          startAutoScroll();
+      }
+  }
+
+  // Инициализация Intersection Observer для отслеживания видимости контейнера
+  function initIntersectionObserver() {
+      const targetElement = buttonsContainer || mapContainer;
+      
+      if (!targetElement) return;
+      
+      observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              isInViewport = entry.isIntersecting;
+              
+              if (isInViewport && isAutoScrollEnabled && !isPausedByHover) {
+                  // Контейнер появился в зоне видимости - запускаем автопрокрутку
+                  startAutoScroll();
+              } else if (!isInViewport) {
+                  // Контейнер скрылся из зоны видимости - останавливаем автопрокрутку
+                  stopAutoScroll();
+              }
+          });
+      }, {
+          threshold: 0.5 // Запускаем, когда хотя бы 50% элемента видно
+      });
+      
+      observer.observe(targetElement);
   }
 
   // Обработчики кликов для кнопок
   buttons.forEach((button, index) => {
       button.addEventListener('click', function() {
-          // Останавливаем автопрокрутку при клике
-          stopAutoScroll();
-          isPausedByClick = true;
+          // Полностью отключаем автопрокрутку при клике
+          disableAutoScroll();
           
+          setTimeout(() => {
           // Активируем нажатую кнопку
           activateButton(index);
           
           // Фильтруем маркеры
           const buttonText = this.textContent;
-          filterMarkers(buttonText);
+          filterMarkers(buttonText);          
           
           // Переключаем карту в зависимости от кнопки
           if (buttonText !== 'География реновации') {
@@ -826,19 +900,7 @@ document.addEventListener('DOMContentLoaded', function() {
           } else {
               switchToDefaultMap();
           }
-          
-          // Очищаем предыдущий таймаут
-          if (clickPauseTimeout) {
-              clearTimeout(clickPauseTimeout);
-          }
-          
-          // Запускаем автопрокрутку через 5 секунд
-          clickPauseTimeout = setTimeout(() => {
-              isPausedByClick = false;
-              if (!isPausedByHover) {
-                  startAutoScroll();
-              }
-          }, 5000);
+        }, 100)
       });
   });
 
@@ -851,7 +913,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       buttonsContainer.addEventListener('mouseleave', function() {
           isPausedByHover = false;
-          if (!isPausedByClick) {
+          if (isAutoScrollEnabled && isInViewport) {
               startAutoScroll();
           }
       });
@@ -865,11 +927,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     mapContainer.addEventListener('mouseleave', function() {
         isPausedByHover = false;
-        if (!isPausedByClick) {
+        if (isAutoScrollEnabled && isInViewport) {
             startAutoScroll();
         }
     });
-}
+  }
 
   // Активируем первую кнопку по умолчанию при загрузке
   function initializeFirstButton() {
@@ -891,6 +953,9 @@ document.addEventListener('DOMContentLoaded', function() {
   addMapStyles();
   initializeMaps();
   initializeFirstButton();
+  initIntersectionObserver(); // Инициализируем отслеживание видимости
+  
+  // Запускаем автопрокрутку при загрузке
   startAutoScroll();
 });
 
