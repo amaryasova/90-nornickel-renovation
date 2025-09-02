@@ -1529,7 +1529,8 @@ h2 {
 
 @media (max-width: 599px) {
   .circle:hover::after {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    max-width: 250px;
   }
 }
 
@@ -1566,11 +1567,17 @@ h2 {
 }
 
 .histogram-bar {
-  width: 5rem;
+  width: 5vw;
   background: linear-gradient(180deg, #0080c9 0%, #00ffbe 100%);
   position: relative;
   transition: height 0.5s ease;
   height: 0;
+}
+
+@media (max-width: 599px) {
+  .histogram-bar {
+    width: 15vw;
+  }
 }
 
 .bar-value {
@@ -1701,12 +1708,12 @@ h2 {
   font-family: 'l', sans-serif;
   font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  pointer-events: none;
+  pointer-events: none; 
 }
 
 @media (max-width: 599px) {
   .point-map:hover::after {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -1746,7 +1753,7 @@ h2 {
 
 .circle-map-3 {
   top: 30%;
-  left: 77%;
+  left: 75%;
 }
 
 .circle-map-4 {
@@ -1775,8 +1782,8 @@ h2 {
 }
 
 .circle-map-9 {
-  top: 72%;
-  left: 10%;
+  top: 70%;
+  left: 17%;
 }
 
 .triangle-map {
@@ -1816,8 +1823,8 @@ h2 {
 }
 
 .triangle-map-5 {
-  top: 33%;
-  left: 78%;
+  top: 34%;
+  left: 76%;
 }
 
 .triangle-map-6 {
@@ -1827,7 +1834,7 @@ h2 {
 
 .triangle-map-7 {
   top: 20%;
-  left: 5%;
+  left: 15%;
 }
 
 .triangle-map-8 {
