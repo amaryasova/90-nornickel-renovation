@@ -2171,3 +2171,56 @@ h2 {
     transform: translateX(0);
   }
 }
+
+.incut_container_text ul {
+  padding-left: 20px; /* Отступ для маркеров */
+  margin: 0.5rem 0; /* Отступы сверху и снизу */
+  list-style-type: disc; /* Тип маркера */
+  margin-top: -0.5rem;
+}
+
+/* Для адаптивных версий */
+@media (min-width: 768px) {
+  .incut_container_text ul {
+    padding-left: 25px;
+  }
+}
+
+.incut_container {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 0;
+  padding-right: 0;
+  gap: 1.5rem;
+  flex-wrap: wrap; 
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .incut_container {
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+    flex: 1 0 100%;
+    margin-bottom: 0rem;
+  }
+}
+
+.incut_container_img {
+  flex: 1 1 48%;
+  position: relative;
+}
+
+.incut_container_text {
+  flex: 1 1 48%;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .incut_container_text {
+    overflow: visible;
+    padding-top: 1rem;
+    flex: 1 0 100%;
+  }
+}
